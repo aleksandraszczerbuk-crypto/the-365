@@ -34,5 +34,13 @@ $('shuffleCards').onclick=()=>newDeck();function renderCollection(){const root=$
 renderPlanets();renderSlots();renderQuiz();newDeck();updateProgress();})();
 
 function showSharedCard(name,{secret=false}={}){const data={'THE FIRST SPARK':['001','✧','FIRST SIGNAL RESTORED'],'MEMORY KEEPER':['002','♄','MEMORY CORE RESTORED'],'THE REAL PLAYER 1':['SECRET','◈','IDENTITY CONFIRMED']}[name];if(!data)return;document.getElementById('cardRevealLabel').textContent=secret?'SECRET CARD DISCOVERED':'NEW CARD UNLOCKED';document.getElementById('cardRevealNumber').textContent='CARD '+data[0];document.getElementById('cardRevealSymbol').textContent=data[1];document.getElementById('cardRevealName').textContent=name;document.getElementById('cardRevealSubtitle').textContent=data[2];const el=document.getElementById('sharedCardReveal');el.hidden=false;const card=document.getElementById('cardRevealCard');card.style.animation='none';void card.offsetWidth;card.style.animation='';document.getElementById('cardRevealClose').focus()}
-document.getElementById('cardRevealClose').onclick=()=>{document.getElementById('sharedCardReveal').hidden=true};
+// Bind after the HTML button has been parsed (the reveal markup follows this script).
+document.addEventListener('DOMContentLoaded',()=>{
+  const closeButton=document.getElementById('cardRevealClose');
+  const reveal=document.getElementById('sharedCardReveal');
+  if(closeButton&&reveal){
+    closeButton.addEventListener('click',()=>{reveal.hidden=true;});
+    reveal.addEventListener('keydown',e=>{if(e.key==='Escape'){reveal.hidden=true;}});
+  }
+});
 </script><div class="card-reveal" id="sharedCardReveal" hidden role="dialog" aria-modal="true" aria-label="Odblokowana karta"><div class="card-reveal-box"><div class="card-reveal-label" id="cardRevealLabel">NEW CARD UNLOCKED</div><div class="card-reveal-card" id="cardRevealCard"><div class="card-reveal-sub" id="cardRevealNumber">CARD 002</div><div class="card-reveal-symbol" id="cardRevealSymbol">♄</div><div class="card-reveal-name" id="cardRevealName">MEMORY KEEPER</div><div class="card-reveal-sub" id="cardRevealSubtitle">MEMORY CORE RESTORED</div></div><button type="button" id="cardRevealClose">CONTINUE →</button></div></div></body></html>
